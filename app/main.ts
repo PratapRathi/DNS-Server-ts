@@ -1,7 +1,7 @@
 import * as dgram from "dgram";
 import { MessageHeader, Question } from "./dnsMessage";
-import type { HeaderInterface, QuestionInterface } from "../types";
-import { combineSection, createHeader, createQuestion } from "../utils/helperFunctions";
+import type { AnswerInterface, HeaderInterface, QuestionInterface } from "../types";
+import { combineSection, createAnswer, createHeader, createQuestion } from "../utils/helperFunctions";
 
 // You can use print statements as follows for debugging, they'll be visible when running tests.
 console.log("Logs from your program will appear here!");
@@ -33,6 +33,14 @@ const responseQuestion: QuestionInterface[] = [{
     class: 1
 }]
 
+const responseAnswer: AnswerInterface[] = [{
+    name: "codecrafters.io",
+    type: 1,
+    class: 1,
+    ttl: 60,
+    data: '\x08\x08\x08\x08',
+}]
+
 udpSocket.on("message", (data: Buffer, remoteAddr: dgram.RemoteInfo) => {
     try {
 
@@ -43,7 +51,9 @@ udpSocket.on("message", (data: Buffer, remoteAddr: dgram.RemoteInfo) => {
 
         const messageQuestion = createQuestion(responseQuestion);
 
-        udpSocket.send(combineSection([messageHeader,messageQuestion]), remoteAddr.port, remoteAddr.address);
+        const  messageAnswer = createAnswer(responseAnswer);
+
+        udpSocket.send(combineSection([messageHeader, messageQuestion, messageAnswer]), remoteAddr.port, remoteAddr.address);
     } catch (e) {
         console.log(`Error sending data: ${e}`);
     }

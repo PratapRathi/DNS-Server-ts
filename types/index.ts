@@ -16,8 +16,16 @@ export interface HeaderInterface {
 
 export interface  QuestionInterface {
     name: String,
-    type: number,
-    class: number
+    type: number,   // 2 bytes
+    class: number   // 2 bytes
+}
+
+export interface  AnswerInterface {
+    name: string;
+    type: number;   // 2 bytes
+    class: number;  // 2 bytes
+    ttl: number;    // 4 bytes
+    data: string
 }
 
 export interface DNS_Packet {

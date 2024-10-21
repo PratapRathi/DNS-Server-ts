@@ -1,4 +1,4 @@
-import type { HeaderInterface, QuestionInterface } from "../types";
+import type { AnswerInterface, HeaderInterface, QuestionInterface } from "../types";
 
 export class MessageHeader {
     ID: number;
@@ -79,5 +79,36 @@ export class  Question {
 
         const finalBuffer = Buffer.concat([new Uint8Array(nameBuffer), new Uint8Array(typeAndClass)]);
         return new  Uint8Array(finalBuffer);
+    }
+}
+
+export class Answer {
+    name: string;
+    type: number;   // 2 bytes
+    class: number;  // 2 bytes
+    ttl: number;    // 4 bytes
+    data: string    // 2 bytes (length of data)
+
+    constructor(answer: AnswerInterface){
+        this.name = answer.name;
+        this.type = answer.type;
+        this.class = answer.class;
+        this.ttl = answer.ttl;
+        this.data = answer.data;
+    }
+
+    encode(): Uint8Array {
+        const buffer = Buffer.alloc(10);
+        buffer.writeInt16BE(this.type);
+        buffer.writeInt16BE(this.class,2);
+        buffer.writeInt32BE(this.ttl,4);
+        buffer.writeUInt16BE(this.data.length,8);
+
+        const s = this.name.split('.').map((e) => `${String.fromCharCode(e.length)}${e}`).join('') + `\x00`;
+        const nameBuffer = Buffer.from(s, 'binary');
+
+        const databuffer  = Buffer.from(this.data, 'binary');
+        const finalBuffer = Buffer.concat([new Uint8Array(nameBuffer), new  Uint8Array(buffer),  new Uint8Array(databuffer)]);
+        return new Uint8Array(finalBuffer);
     }
 }
