@@ -11,22 +11,6 @@ console.log("Logs from your program will appear here!");
 const udpSocket: dgram.Socket = dgram.createSocket("udp4");
 udpSocket.bind(2053, "127.0.0.1");
 
-const responseHeader: HeaderInterface = {
-    ID: 1234,
-    QR: 1,
-    OPCODE: 0,
-    AA: 0,
-    TC: 0,
-    RD: 0,
-    RA: 0,
-    Z: 0,
-    RCODE: 0,
-    QDCOUNT: 0,
-    ANCOUNT: 0,
-    NSCOUNT: 0,
-    ARCOUNT: 0
-}
-
 const responseQuestion: QuestionInterface[] = [{
     name: "codecrafters.io",
     type: 1,
@@ -46,6 +30,28 @@ udpSocket.on("message", (data: Buffer, remoteAddr: dgram.RemoteInfo) => {
 
         console.log(`Received data from ${remoteAddr.address}:${remoteAddr.port}`);
 
+        const responseHeader: HeaderInterface = {
+            ID: 1234,
+            QR: 1,
+            OPCODE: 0,
+            AA: 0,
+            TC: 0,
+            RD: 0,
+            RA: 0,
+            Z: 0,
+            RCODE: 0,
+            QDCOUNT: 0,
+            ANCOUNT: 0,
+            NSCOUNT: 0,
+            ARCOUNT: 0
+        }
+
+        // Construct Header structure
+        responseHeader.ID = data.readInt16BE(0);
+        const thirdByte = data.readUInt8(2).toString(2).padStart(8,'0');
+        responseHeader.OPCODE = parseInt(thirdByte.slice(1, 5));
+        responseHeader.RD = parseInt(thirdByte[thirdByte.length-1]);
+        responseHeader.RCODE = (responseHeader.OPCODE) === 0 ? responseHeader.OPCODE : 100;
         responseHeader.QDCOUNT = responseQuestion.length;
         const messageHeader = createHeader(responseHeader);
 
