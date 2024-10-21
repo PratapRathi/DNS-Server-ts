@@ -1,3 +1,5 @@
+import type { HeaderInterface, QuestionInterface } from "../types";
+
 export class MessageHeader {
     ID: number;
     QR: number;
@@ -13,7 +15,7 @@ export class MessageHeader {
     NSCOUNT: number;
     ARCOUNT: number;
 
-    constructor(header : Header) {
+    constructor(header : HeaderInterface) {
         this.ID = header.ID;
         this.QR = header.QR;
         this.OPCODE = header.OPCODE;
@@ -56,18 +58,26 @@ export class MessageHeader {
     }
 }
 
-export interface Header {
-    ID: number,
-    QR: number,
-    OPCODE: number,
-    AA: number,
-    TC: number,
-    RD: number,
-    RA: number,
-    Z: number,
-    RCODE: number,
-    QDCOUNT: number,
-    ANCOUNT: number,
-    NSCOUNT: number,
-    ARCOUNT: number
+export class  Question {
+    name: String;
+    type: number;
+    class: number;
+
+    constructor(question : QuestionInterface) {
+        this.name = question.name;
+        this.type = question.type;
+        this.class =  question.class;
+    }
+
+    encode ():  Uint8Array {
+        const typeAndClass = Buffer.alloc(4);
+        typeAndClass.writeUint16BE(this.type, 0);
+        typeAndClass.writeUint16BE(this.class, 2);
+
+        const s = this.name.split('.').map((e) => `${String.fromCharCode(e.length)}${e}`).join('') + `\x00`;
+        const nameBuffer = Buffer.from(s, 'binary');
+
+        const finalBuffer = Buffer.concat([new Uint8Array(nameBuffer), new Uint8Array(typeAndClass)]);
+        return new  Uint8Array(finalBuffer);
+    }
 }
