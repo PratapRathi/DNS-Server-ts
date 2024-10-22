@@ -15,7 +15,7 @@ export interface HeaderInterface {
 }
 
 export interface  QuestionInterface {
-    name: String,
+    name: string,
     type: number,   // 2 bytes
     class: number   // 2 bytes
 }

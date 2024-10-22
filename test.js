@@ -1,4 +1,18 @@
-const name = "google.com";
-const s = name.split('.').map((e) => `${String.fromCharCode(e.length)}${e}`).join('');
+import dns from 'dns';
 
-console.log(s);
+const name = "www.google.com";
+
+dns.lookup(name, (err, address, family) => {
+    console.log('address of %s is %j family: IPv%s',
+        name, address, family);
+    console.log(name);
+    console.log(address);
+    console.log("IPv" + family);
+});
+
+// async function call() {
+//     const address = await dns.lookup(name);
+//     console.log(address);
+// }
+
+// call();

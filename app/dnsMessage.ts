@@ -87,7 +87,7 @@ export class Answer {
     type: number;   // 2 bytes
     class: number;  // 2 bytes
     ttl: number;    // 4 bytes
-    data: string    // 2 bytes (length of data)
+    data: string    // 4 bytes (length of data)
 
     constructor(answer: AnswerInterface){
         this.name = answer.name;
@@ -98,16 +98,17 @@ export class Answer {
     }
 
     encode(): Uint8Array {
-        const buffer = Buffer.alloc(10);
-        buffer.writeInt16BE(this.type);
-        buffer.writeInt16BE(this.class,2);
-        buffer.writeInt32BE(this.ttl,4);
-        buffer.writeUInt16BE(this.data.length,8);
-
         const s = this.name.split('.').map((e) => `${String.fromCharCode(e.length)}${e}`).join('') + `\x00`;
         const nameBuffer = Buffer.from(s, 'binary');
 
-        const databuffer  = Buffer.from(this.data, 'binary');
+        const buffer = Buffer.alloc(10);
+        buffer.writeInt16BE(this.type,0);
+        buffer.writeInt16BE(this.class,2);
+        buffer.writeInt32BE(this.ttl,4);
+        buffer.writeUInt16BE(4,8);  // Write length of IP data (always 4 for IPv4)
+
+        const databuffer  = Buffer.from(this.data.split('.').map(Number));
+
         const finalBuffer = Buffer.concat([new Uint8Array(nameBuffer), new  Uint8Array(buffer),  new Uint8Array(databuffer)]);
         return new Uint8Array(finalBuffer);
     }
