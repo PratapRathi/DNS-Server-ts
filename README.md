@@ -1,36 +1,100 @@
-[![progress-banner](https://backend.codecrafters.io/progress/dns-server/719f0c18-f602-4a3f-b305-8447e561a8dd)](https://app.codecrafters.io/users/codecrafters-bot?r=2qF)
+# DNS Server in TypeScript
 
-This is a starting point for TypeScript solutions to the
-["Build Your Own DNS server" Challenge](https://app.codecrafters.io/courses/dns-server/overview).
+A fully functional DNS server built using TypeScript. This project showcases a custom implementation of a DNS server, capable of processing DNS queries and responding with the appropriate records. It is designed for educational purposes and demonstrates how DNS protocols work under the hood.
 
-In this challenge, you'll build a DNS server that's capable of parsing and
-creating DNS packets, responding to DNS queries, handling various record types
-and doing recursive resolve. Along the way we'll learn about the DNS protocol,
-DNS packet format, root servers, authoritative servers, forwarding servers,
-various record types (A, AAAA, CNAME, etc) and more.
+## Table of Contents
 
-**Note**: If you're viewing this repo on GitHub, head over to
-[codecrafters.io](https://codecrafters.io) to try the challenge.
+- [Features](#features)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Project Structure](#project-structure)
+- [DNS Query Flow](#dns-query-flow)
+- [Future Improvements](#future-improvements)
+- [Contributing](#contributing)
+- [License](#license)
 
-# Passing the first stage
+## Features
 
-The entry point for your `your_program.sh` implementation is in `app/main.ts`.
-Study and uncomment the relevant code, and push your changes to pass the first
-stage:
+- Supports A (Address) record queries
+- Parses and responds to DNS queries via UDP
+- Extracts information from the DNS "Question" section
+- Lightweight and easy to set up
+- Written entirely in TypeScript
 
-```sh
-git commit -am "pass 1st stage" # any msg
-git push origin master
+## Installation
+
+### Prerequisites
+
+Make sure you have the following installed:
+
+- [Node.js](https://nodejs.org/en/download/)
+- [TypeScript](https://www.typescriptlang.org/)
+
+### Clone the repository
+
+```bash
+git clone https://github.com/PratapRathi/DNS-Server-ts.git
+cd DNS-Server-ts
+
 ```
 
-Time to move on to the next stage!
+### Install dependencies
+```bash
+npm install
+```
 
-# Stage 2 & beyond
+### Build the project
+```bash
+npm run build
+```
 
-Note: This section is for stages 2 and beyond.
+## Usage
+Start the DNS server by running:
+```bash
+npm run start
+```
+By default, the server listens on localhost and the standard DNS PORT 53.
 
-1. Ensure you have `bun (1.1)` installed locally
-1. Run `./your_program.sh` to run your program, which is implemented in
-   `app/main.ts`.
-1. Commit your changes and run `git push origin master` to submit your solution
-   to CodeCrafters. Test output will be streamed to your terminal.
+You can test your server using nslookup or dig:
+
+```bash
+nslookup www.example.com localhost
+```
+or
+```bash
+dig @localhost www.example.com
+```
+### Project Structure
+```bash
+📦 DNS-Server-ts
+├─ app
+│  ├─ app.ts    // Entry point of application
+│  └─ dnsMessage.ts
+├─ types
+│  └─ index.ts
+├─ utils
+│  └─ helperFuntions.ts
+├─ .gitattributes
+├─ .gitignore
+├─ bun.lockb
+├─ package-lock.json
+├─ package.json
+├─ README.md
+└─ tsconfig.json
+```
+## DNS Query Flow
+
+1. **Receive a query:** The server listens for incoming DNS requests.
+2. **Parse the packet:** The query is parsed to extract the header and question sections.
+3. **Process the query:** The server processes the DNS question and prepares a response.
+4. **Send a response:** A DNS response is constructed and sent back to the client.
+
+## Future Improvements
+
+- Add support for additional DNS record types (e.g., MX, CNAME)
+- Implement caching for faster responses
+- Support for TCP in addition to UDP
+
+## Contributing
+
+Contributions are welcome! Please submit a pull request or open an issue to discuss improvements or feature requests.
