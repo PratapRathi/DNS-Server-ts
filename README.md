@@ -11,7 +11,6 @@ A fully functional DNS server built using TypeScript. This project showcases a c
 - [DNS Query Flow](#dns-query-flow)
 - [Future Improvements](#future-improvements)
 - [Contributing](#contributing)
-- [License](#license)
 
 ## Features
 
@@ -64,7 +63,7 @@ or
 ```bash
 dig @localhost www.example.com
 ```
-### Project Structure
+## Project Structure
 ```bash
 📦 DNS-Server-ts
 ├─ app
@@ -82,6 +81,9 @@ dig @localhost www.example.com
 ├─ README.md
 └─ tsconfig.json
 ```
+## Project Workflow
+![image](https://github.com/user-attachments/assets/4a1fcc8e-a881-48f1-b99e-0c1cabec4c94)
+
 ## DNS Query Flow
 
 1. **Receive a query:** The server listens for incoming DNS requests.
