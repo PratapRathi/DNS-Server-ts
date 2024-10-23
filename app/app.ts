@@ -1,5 +1,4 @@
 import * as dgram from "dgram";
-import { MessageHeader, Question } from "./dnsMessage";
 import type { AnswerInterface, HeaderInterface, QuestionInterface } from "../types";
 import { combineSection, createAnswer, createHeader, createHeaderFromBuffer, createQuestion, parseAnswer, parseQuestion } from "../utils/helperFunctions";
 
