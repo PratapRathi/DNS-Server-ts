@@ -27,7 +27,7 @@ A fully functional DNS server built using TypeScript. This project showcases a c
 Make sure you have the following installed:
 
 - [Node.js](https://nodejs.org/en/download/)
-- [TypeScript](https://www.typescriptlang.org/)
+- [Bun](https://bun.sh/)
 
 ### Clone the repository
 
@@ -50,7 +50,7 @@ npm run build
 ## Usage
 Start the DNS server by running:
 ```bash
-npm run start
+sudo npm run start
 ```
 By default, the server listens on localhost and the standard DNS PORT 53.
 
