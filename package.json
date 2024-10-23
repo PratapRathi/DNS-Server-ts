@@ -1,5 +1,5 @@
 {
-  "name": "@codecrafters/dns-server",
+  "name": "@pratap/dns-server",
   "description": "Build your own DNS server challenge, from CodeCrafters",
   "type": "module",
   "scripts": {
