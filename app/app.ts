@@ -9,14 +9,13 @@ console.log("Logs from your program will appear here!");
 // Uncomment this block to pass the first stage
 
 const udpSocket: dgram.Socket = dgram.createSocket("udp4");
-udpSocket.bind(2053, "127.0.0.1");
+udpSocket.bind(53, "127.0.0.1");
 
 
-udpSocket.on("message", (data: Buffer, remoteAddr: dgram.RemoteInfo) => {
+udpSocket.on("message", async (data: Buffer, remoteAddr: dgram.RemoteInfo) => {
     try {
 
         console.log(`Received data from ${remoteAddr.address}:${remoteAddr.port}`);
-
         // Parsing and Construct Header structure
         const requestHeader: HeaderInterface = createHeaderFromBuffer(data);
         
@@ -24,14 +23,13 @@ udpSocket.on("message", (data: Buffer, remoteAddr: dgram.RemoteInfo) => {
         const responseQuestion = parseQuestion(data, requestHeader.QDCOUNT);
         
         // Modifying the Answer
-        const responseAnswer: AnswerInterface[] = parseAnswer(responseQuestion);
+        const responseAnswer: AnswerInterface[] = await parseAnswer(responseQuestion);
         
         // Convert data to binary
-        requestHeader.ANCOUNT = responseAnswer.length;  //  Update the Answer count field
+        requestHeader.ANCOUNT = responseQuestion.length;  //  Update the Answer count field
         const messageHeader = createHeader(requestHeader);  // converted to binary data
         const messageQuestion = createQuestion(responseQuestion);   // converted to binary data
         const  messageAnswer = createAnswer(responseAnswer);    // converted to binary data
-
         udpSocket.send(combineSection([messageHeader, messageQuestion, messageAnswer]), remoteAddr.port, remoteAddr.address);
     } catch (e) {
         console.log(`Error sending data: ${e}`);

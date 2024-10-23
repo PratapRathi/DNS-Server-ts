@@ -43,7 +43,7 @@ export class MessageHeader {
             (this.TC << 9) |
             (this.RD << 8) |
             (this.RA << 7) |
-            this.Z |
+            (0 << 4) |          // this.Z field must always be 0, it contains reserved value
             this.RCODE;
         buffer.writeUint16BE(flags, offset);
         offset += 2;
